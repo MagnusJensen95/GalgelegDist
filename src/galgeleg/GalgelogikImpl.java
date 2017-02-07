@@ -4,12 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
-public class Galgelogik {
+import brugerautorisation.data.Bruger;
+import brugerautorisation.transport.rmi.Brugeradmin;
+
+public class GalgelogikImpl extends UnicastRemoteObject implements Galgeinterface {
   private ArrayList<String> muligeOrd = new ArrayList<String>();
   private String ordet;
   private ArrayList<String> brugteBogstaver = new ArrayList<String>();
@@ -53,7 +59,7 @@ public class Galgelogik {
   }
 
 
-  public Galgelogik() {
+  public GalgelogikImpl() throws java.rmi.RemoteException{
     muligeOrd.add("bil");
     muligeOrd.add("computer");
     muligeOrd.add("programmering");
@@ -75,7 +81,7 @@ public class Galgelogik {
   }
 
 
-  private void opdaterSynligtOrd() {
+  public void opdaterSynligtOrd() {
     synligtOrd = "";
     spilletErVundet = true;
     for (int n = 0; n < ordet.length(); n++) {
@@ -124,7 +130,7 @@ public class Galgelogik {
   }
 
 
-  public static String hentUrl(String url) throws IOException {
+  public String hentUrl(String url) throws java.rmi.RemoteException, IOException  {
     BufferedReader br = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
     StringBuilder sb = new StringBuilder();
     String linje = br.readLine();
@@ -135,7 +141,7 @@ public class Galgelogik {
     return sb.toString();
   }
 
-  public void hentOrdFraDr() throws Exception {
+  public void hentOrdFraDr() throws Exception, java.rmi.RemoteException {
     String data = hentUrl("http://dr.dk");
     System.out.println("data = " + data);
 
@@ -147,4 +153,14 @@ public class Galgelogik {
     System.out.println("muligeOrd = " + muligeOrd);
     nulstil();
   }
+
+@Override
+public Bruger hentBruger(String user, String pass) throws Exception {
+	Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+
+    //ba.sendGlemtAdgangskodeEmail("jacno", "Dette er en test, husk at skifte kode");
+		//ba.ændrAdgangskode("jacno", "kodenj4gvs", "xxx");
+		Bruger b = ba.hentBruger(user, pass);
+		return b;
+}
 }

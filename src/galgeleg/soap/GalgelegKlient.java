@@ -38,7 +38,7 @@ public class GalgelegKlient{
 		GalgeISOAP ba = service.getPort(GalgeISOAP.class);
 		
 		
-		/*Bruger bruger = ba.hentBruger(user,  pass);
+		Bruger bruger = ba.hentBruger(user,  pass);
 		if (bruger != null){
 			legitUser = true;
 		}
@@ -52,7 +52,7 @@ public class GalgelegKlient{
 		  System.out.println("Login fejlet");
 		  
 	  }
-	  */
+	 
 	  
 	  boolean igen = true;
 	  

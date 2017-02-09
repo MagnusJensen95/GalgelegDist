@@ -1,4 +1,4 @@
-package galgeleg;
+package galgeleg.rmi;
 
 import java.io.IOException;
 import java.util.ArrayList;

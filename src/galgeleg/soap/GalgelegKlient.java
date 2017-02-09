@@ -1,4 +1,4 @@
-package galgeleg;
+package galgeleg.soap;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,6 +6,9 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
+
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
 
 import brugerautorisation.data.Bruger;
 import brugerautorisation.transport.rmi.Brugeradmin;
@@ -15,7 +18,7 @@ import brugerautorisation.transport.rmi.Brugeradmin;
 
 public class GalgelegKlient{
 	
-	static Galgeinterface spil;
+	static GalgeISOAP spil;
 
 
   public static void main(String[] args) throws Exception  {
@@ -28,8 +31,14 @@ public class GalgelegKlient{
 	  String pass = scan.next();
 	  
 	  boolean legitUser = false;
-		Galgeinterface ba =(Galgeinterface) Naming.lookup("rmi://localhost/galgetjeneste");
-		Bruger bruger = ba.hentBruger(user,  pass);
+	  
+	  URL url = new URL("http://localhost:9901/galgeSOAP?wsdl");
+	  QName qname = new QName("http://soap.galgeleg/", "GalgelogikImplService");
+	  Service service = Service.create(url, qname);
+		GalgeISOAP ba = service.getPort(GalgeISOAP.class);
+		
+		
+		/*Bruger bruger = ba.hentBruger(user,  pass);
 		if (bruger != null){
 			legitUser = true;
 		}
@@ -43,6 +52,7 @@ public class GalgelegKlient{
 		  System.out.println("Login fejlet");
 		  
 	  }
+	  */
 	  
 	  boolean igen = true;
 	  
@@ -59,7 +69,7 @@ public class GalgelegKlient{
 	  
   }
   
-  public static boolean spilSpillet(Galgeinterface face) throws MalformedURLException, RemoteException, NotBoundException {
+  public static boolean spilSpillet(GalgeISOAP face) throws MalformedURLException, RemoteException, NotBoundException {
 	  
 	  spil = face;
 	  

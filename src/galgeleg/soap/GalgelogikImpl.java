@@ -1,6 +1,8 @@
-package galgeleg;
+package galgeleg.soap;
 
 import java.io.BufferedReader;
+
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -12,10 +14,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
+import javax.jws.WebService;
+
 import brugerautorisation.data.Bruger;
 import brugerautorisation.transport.rmi.Brugeradmin;
 
-public class GalgelogikImpl extends UnicastRemoteObject implements Galgeinterface {
+@WebService(endpointInterface = "galgeleg.soap.GalgeISOAP")
+public class GalgelogikImpl implements GalgeISOAP {
   private ArrayList<String> muligeOrd = new ArrayList<String>();
   private String ordet;
   private ArrayList<String> brugteBogstaver = new ArrayList<String>();
@@ -130,7 +135,7 @@ public class GalgelogikImpl extends UnicastRemoteObject implements Galgeinterfac
   }
 
 
-  public String hentUrl(String url) throws java.rmi.RemoteException, IOException  {
+  public String hentUrl(String url) throws Exception {
     BufferedReader br = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
     StringBuilder sb = new StringBuilder();
     String linje = br.readLine();
@@ -141,7 +146,7 @@ public class GalgelogikImpl extends UnicastRemoteObject implements Galgeinterfac
     return sb.toString();
   }
 
-  public void hentOrdFraDr() throws Exception, java.rmi.RemoteException {
+  public void hentOrdFraDr() throws Exception{
     String data = hentUrl("http://dr.dk");
     System.out.println("data = " + data);
 

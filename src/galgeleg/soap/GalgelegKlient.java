@@ -32,7 +32,7 @@ public class GalgelegKlient{
 	  
 	  boolean legitUser = false;
 	  
-	  URL url = new URL("http://localhost:9901/galgeSOAP?wsdl");
+	  URL url = new URL("http://ec2-35-165-42-120.us-west-2.compute.amazonaws.com:9928/galgeSOAP?wsdl");
 	  QName qname = new QName("http://soap.galgeleg/", "GalgelogikImplService");
 	  Service service = Service.create(url, qname);
 		GalgeISOAP ba = service.getPort(GalgeISOAP.class);
